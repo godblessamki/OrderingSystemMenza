@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="frontend/frontend.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="OrderingSystemMenza.AppHost/OrderingSystemMenza.AppHost.csproj" />
+  <Project Path="OrderingSystemMenza.Server/OrderingSystemMenza.Server.csproj" />
+</Solution>
