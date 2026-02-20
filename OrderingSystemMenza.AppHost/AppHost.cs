@@ -1,13 +1,10 @@
+
 var builder = DistributedApplication.CreateBuilder(args);
 
-var server = builder.AddProject<Projects.OrderingSystemMenza_Server>("server")
-    .WithHttpHealthCheck("/health")
-    .WithExternalHttpEndpoints();
+var sql = builder.AddSqlServer("sql")
+                 .WithDataVolume()
+                 .WithLifetime(ContainerLifetime.Persistent);
 
-var webfrontend = builder.AddViteApp("webfrontend", "../frontend")
-    .WithReference(server)
-    .WaitFor(server);
-
-server.PublishWithContainerFiles(webfrontend, "wwwroot");
+var sqldb = sql.AddDatabase("MenzaDb");
 
 builder.Build().Run();
