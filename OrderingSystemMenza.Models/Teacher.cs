@@ -4,7 +4,8 @@ using System.Text;
 
 namespace OrderingSystemMenza.Models
 {
-    internal class Teacher
+    internal class Teacher : Person
     {
+        public required string Subject { get; set; }
     }
 }

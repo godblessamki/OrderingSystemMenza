@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OrderingSystemMenza.DbManager\OrderingSystemMenza.DbManager.csproj" />
     <ProjectReference Include="..\OrderingSystemMenza.Server\OrderingSystemMenza.Server.csproj" />
   </ItemGroup>
 
