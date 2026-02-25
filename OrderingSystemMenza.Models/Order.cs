@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OrderingSystemMenza.Models
 {
-    internal class Order
+    public class Order
     {
         #region getters and setters
         public int Id { get; set; }

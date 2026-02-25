@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.AddSqlServerDbContext<ModelsContext>("database");
+builder.AddSqlServerDbContext<ModelsContext>("postgresdb");
 
 var app = builder.Build();
 

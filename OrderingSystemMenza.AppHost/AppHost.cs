@@ -1,14 +1,14 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var sql = builder.AddSqlServer("sql")
+var postsgres = builder.AddPostgres("postgres")
                  .WithDataVolume()
                  .WithLifetime(ContainerLifetime.Persistent);
 
-var database = sql.AddDatabase("MenzaDb");
+var postgresdb = postsgres.AddDatabase("postgresdb");
 
 builder.AddProject<Projects.OrderingSystemMenza_DbManager>("ordering-system-Menza-dbmanager")
-       .WithReference(database)
+       .WithReference(postgresdb)
        .WithHttpCommand("reset-db", "Reset Database")
-       .WaitFor(database);
+       .WaitFor(postgresdb);
 
 builder.Build().Run();
