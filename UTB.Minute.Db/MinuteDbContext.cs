@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection.Emit;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
+using UTB.Minute.Db.Entities;
+
+public class MinuteDbContext : DbContext
+{
+    public MinuteDbContext(DbContextOptions<MinuteDbContext> options)
+        : base(options)
+    {
+    }
+
+    public DbSet<Meal> Meals => Set<Meal>();
+    public DbSet<MenuItem> MenuItems => Set<MenuItem>();
+    public DbSet<Order> Orders => Set<Order>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Meal>()
+            .Property(m => m.Price)
+            .HasPrecision(10, 2);
+
+        modelBuilder.Entity<MenuItem>()
+            .HasOne(m => m.Meal)
+            .WithMany(m => m.MenuItems)
+            .HasForeignKey(m => m.MealId);
+
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.MenuItem)
+            .WithMany(m => m.Orders)
+            .HasForeignKey(o => o.MenuItemId);
+    }
+}
