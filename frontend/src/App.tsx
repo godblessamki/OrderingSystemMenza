@@ -92,9 +92,10 @@ function App() {
   }, [cart])
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-  const serviceFee = subtotal > 0 ? Math.ceil(subtotal * SERVICE_FEE_PERCENTAGE) : 0
+  const serviceFee = subtotal > 0 ? Math.round(subtotal * SERVICE_FEE_PERCENTAGE * 100) / 100 : 0
   const total = subtotal + serviceFee
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0)
+  const formatPrice = (value: number) => `${value.toFixed(2)} Kč`
 
   const updateQuantity = (itemId: number, amount: number) => {
     setCart((previous) => {
@@ -181,7 +182,7 @@ function App() {
                 <article key={item.id} className="menu-card">
                   <div className="menu-card-header">
                     <h3>{item.name}</h3>
-                    <p className="menu-price">{item.price} Kč</p>
+                    <p className="menu-price">{formatPrice(item.price)}</p>
                   </div>
                   <p className="menu-description">{item.description}</p>
                   <div className="menu-meta">
@@ -216,9 +217,9 @@ function App() {
                 <li key={item.id}>
                   <div>
                     <h3>{item.name}</h3>
-                    <p>{item.quantity} × {item.price} Kč</p>
+                    <p>{item.quantity} × {formatPrice(item.price)}</p>
                   </div>
-                  <p>{item.quantity * item.price} Kč</p>
+                  <p>{formatPrice(item.quantity * item.price)}</p>
                 </li>
               ))}
             </ul>
@@ -237,9 +238,9 @@ function App() {
 
           <div className="totals">
             <p><span>Items</span><span>{totalItems}</span></p>
-            <p><span>Subtotal</span><span>{subtotal} Kč</span></p>
-            <p><span>Service fee</span><span>{serviceFee} Kč</span></p>
-            <p className="total-line"><span>Total</span><span>{total} Kč</span></p>
+            <p><span>Subtotal</span><span>{formatPrice(subtotal)}</span></p>
+            <p><span>Service fee</span><span>{formatPrice(serviceFee)}</span></p>
+            <p className="total-line"><span>Total</span><span>{formatPrice(total)}</span></p>
           </div>
 
           <button className="checkout-button" type="button" disabled={cartItems.length === 0} onClick={placeOrder}>
@@ -253,7 +254,7 @@ function App() {
                 {placedOrders.slice(0, 3).map((order) => (
                   <li key={order.id}>
                     <p><strong>{order.id}</strong> · {order.items} items</p>
-                    <p>{order.total} Kč · Pickup {order.pickupTime} · Placed {order.createdAt}</p>
+                    <p>{formatPrice(order.total)} · Pickup {order.pickupTime} · Placed {order.createdAt}</p>
                   </li>
                 ))}
               </ul>
