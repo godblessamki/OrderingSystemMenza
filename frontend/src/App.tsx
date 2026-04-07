@@ -92,7 +92,7 @@ function App() {
   }, [cart])
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-  const serviceFee = subtotal > 0 ? Math.round(subtotal * SERVICE_FEE_PERCENTAGE) : 0
+  const serviceFee = subtotal > 0 ? Math.ceil(subtotal * SERVICE_FEE_PERCENTAGE) : 0
   const total = subtotal + serviceFee
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0)
 
@@ -112,7 +112,7 @@ function App() {
     if (cartItems.length === 0) return
     setPlacedOrders((previous) => [
       {
-        id: `ORD-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
+        id: `ORD-${crypto.randomUUID().toUpperCase()}`,
         items: totalItems,
         total,
         pickupTime,
