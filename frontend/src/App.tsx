@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import './App.css'
 
 interface WeatherSnapshot {
@@ -33,6 +33,7 @@ const menuItems: MenuItem[] = [
 ]
 
 const categories = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Drinks', 'Desserts'] as const
+const SERVICE_FEE_RATE = 0.05
 
 function App() {
   const [weatherData, setWeatherData] = useState<WeatherSnapshot[]>([])
@@ -45,6 +46,7 @@ function App() {
   const [placedOrders, setPlacedOrders] = useState<
     { id: string; items: number; total: number; pickupTime: string; createdAt: string }[]
   >([])
+  const orderSequence = useRef(1)
 
   const fetchWeatherForecast = async () => {
     setLoading(true)
@@ -92,7 +94,7 @@ function App() {
   }, [cart])
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-  const serviceFee = subtotal > 0 ? Math.round(subtotal * 0.05) : 0
+  const serviceFee = subtotal > 0 ? Math.round(subtotal * SERVICE_FEE_RATE) : 0
   const total = subtotal + serviceFee
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0)
 
@@ -110,9 +112,11 @@ function App() {
 
   const placeOrder = () => {
     if (cartItems.length === 0) return
+    const currentSequence = orderSequence.current
+    orderSequence.current += 1
     setPlacedOrders((previous) => [
       {
-        id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+        id: `ORD-${Date.now().toString().slice(-6)}-${currentSequence.toString().padStart(2, '0')}`,
         items: totalItems,
         total,
         pickupTime,
@@ -127,7 +131,7 @@ function App() {
     <div className="app-container">
       <header className="app-header">
         <div>
-          <p className="header-eyebrow">OrderingSystemMenza</p>
+          <p className="header-eyebrow">Ordering System Menza</p>
           <h1 className="app-title">Order food faster, dine smarter.</h1>
           <p className="app-subtitle">Modern, responsive canteen ordering with real-time cart updates.</p>
         </div>
