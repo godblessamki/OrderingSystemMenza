@@ -92,7 +92,8 @@ function App() {
   }, [cart])
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-  const serviceFee = subtotal > 0 ? Math.round(subtotal * SERVICE_FEE_PERCENTAGE * 100) / 100 : 0
+  const roundCurrency = (value: number) => Number(value.toFixed(2))
+  const serviceFee = subtotal > 0 ? roundCurrency(subtotal * SERVICE_FEE_PERCENTAGE) : 0
   const total = subtotal + serviceFee
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0)
   const formatPrice = (value: number) => `${value.toFixed(2)} Kč`
@@ -113,7 +114,7 @@ function App() {
     if (cartItems.length === 0) return
     setPlacedOrders((previous) => [
       {
-        id: `ORD-${crypto.randomUUID().toUpperCase()}`,
+        id: `ORD-${crypto.randomUUID()}`,
         items: totalItems,
         total,
         pickupTime,
